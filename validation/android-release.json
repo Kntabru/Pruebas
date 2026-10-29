@@ -1,0 +1,143 @@
+{
+  "apk": "Palabreo 1.20.apk",
+  "sha256": "e0a0d4485a9a785f707db679b1ac423b6270a6bb7a5bd2cd2fff1167915c73ea",
+  "manifest": [
+    {
+      "element": "manifest",
+      "attributes": {
+        "versionCode": 22,
+        "versionName": "1.20",
+        "compileSdkVersion": 35,
+        "compileSdkVersionCodename": "15",
+        "package": "com.palabreo.app",
+        "platformBuildVersionCode": 35,
+        "platformBuildVersionName": 15
+      }
+    },
+    {
+      "element": "uses-permission",
+      "attributes": {
+        "name": "android.permission.INTERNET"
+      }
+    },
+    {
+      "element": "uses-permission",
+      "attributes": {
+        "name": "android.permission.SCHEDULE_EXACT_ALARM"
+      }
+    },
+    {
+      "element": "uses-permission",
+      "attributes": {
+        "name": "android.permission.POST_NOTIFICATIONS"
+      }
+    },
+    {
+      "element": "uses-permission",
+      "attributes": {
+        "name": "android.permission.RECEIVE_BOOT_COMPLETED"
+      }
+    },
+    {
+      "element": "uses-sdk",
+      "attributes": {
+        "minSdkVersion": 26,
+        "targetSdkVersion": 35
+      }
+    },
+    {
+      "element": "application",
+      "attributes": {
+        "theme": 2130837504,
+        "label": "Palabreo",
+        "icon": 2130771968,
+        "allowBackup": 0,
+        "supportsRtl": 4294967295,
+        "usesCleartextTraffic": 0
+      }
+    },
+    {
+      "element": "activity",
+      "attributes": {
+        "name": ".MainActivity",
+        "exported": 4294967295,
+        "configChanges": 1184
+      }
+    },
+    {
+      "element": "intent-filter",
+      "attributes": {}
+    },
+    {
+      "element": "action",
+      "attributes": {
+        "name": "android.intent.action.MAIN"
+      }
+    },
+    {
+      "element": "category",
+      "attributes": {
+        "name": "android.intent.category.LAUNCHER"
+      }
+    },
+    {
+      "element": "receiver",
+      "attributes": {
+        "name": ".ReminderReceiver",
+        "exported": 0
+      }
+    },
+    {
+      "element": "intent-filter",
+      "attributes": {}
+    },
+    {
+      "element": "action",
+      "attributes": {
+        "name": "android.intent.action.BOOT_COMPLETED"
+      }
+    },
+    {
+      "element": "action",
+      "attributes": {
+        "name": "android.intent.action.MY_PACKAGE_REPLACED"
+      }
+    },
+    {
+      "element": "action",
+      "attributes": {
+        "name": "android.intent.action.TIME_SET"
+      }
+    },
+    {
+      "element": "action",
+      "attributes": {
+        "name": "android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED"
+      }
+    },
+    {
+      "element": "action",
+      "attributes": {
+        "name": "android.intent.action.TIMEZONE_CHANGED"
+      }
+    },
+    {
+      "element": "service",
+      "attributes": {
+        "name": ".ReminderJob",
+        "permission": "android.permission.BIND_JOB_SERVICE",
+        "exported": 0
+      }
+    }
+  ],
+  "native_dex_unchanged": true,
+  "web_asset_matches_build": true,
+  "resources_stored_and_aligned_4_bytes": true,
+  "zip_crc_ok": true,
+  "signature_verified_by_apksigner": true,
+  "native_device_tested": false,
+  "limitations": [
+    "Native code is preserved DEX, not recompiled Java/Kotlin.",
+    "No Android device/emulator or live Supabase test."
+  ]
+}

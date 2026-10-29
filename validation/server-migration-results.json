@@ -1,0 +1,26 @@
+{
+  "database": "local PostgreSQL 17.11, invented users only",
+  "production_supabase_modified": false,
+  "checks": [
+    "existing rows preserved",
+    "table ACL/RLS preserved",
+    "league 5: shared day, lengths, win/loss, idempotency, authorization, reports, immutable length, daily-count independence",
+    "league 6: shared day, lengths, win/loss, idempotency, authorization, reports, immutable length, daily-count independence",
+    "league 7: shared day, lengths, win/loss, idempotency, authorization, reports, immutable length, daily-count independence",
+    "league random: shared day, lengths, win/loss, idempotency, authorization, reports, immutable length, daily-count independence",
+    "legacy league and completed result preserved",
+    "global remains five; private catalog inaccessible; invalid configuration rejected",
+    "random: one persisted choice per day; concurrent members agree; all three lengths observed across 30 synthetic dates",
+    "second application fails safely before changes"
+  ],
+  "random_days": {
+    "5": 9,
+    "6": 12,
+    "7": 9
+  },
+  "caveats": [
+    "Mock auth.uid and unchanged membership/week helpers in fixture; not a full Supabase instance.",
+    "No remote schema/data backup was retrieved.",
+    "No claim that production migration has been applied."
+  ]
+}

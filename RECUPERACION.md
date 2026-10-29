@@ -1,63 +1,45 @@
-# Palabreo 1.19 recuperado
+# Palabreo recuperado: estado 1.20
 
-Recuperación desde `assets/Palabra.html` de la APK aportada. No se han añadido mejoras ni cambiado reglas, textos, diccionarios, estilos o integración con el servidor. El README preexistente se conserva. La carpeta `/workspace/recuperacion-palabreo-1.19` permanece intacta y no es necesaria para ejecutar este proyecto.
+La base 1.19 se recuperó de la APK del usuario y se guardó en el commit `d4690af`. El HTML reconstruido en esa base coincidía byte por byte con el asset original. La carpeta `/workspace/recuperacion-palabreo-1.19` permanece intacta. El estado actual incorpora únicamente la ampliación autorizada a 6/7 letras y la configuración de longitud de ligas.
 
-## Archivos editables
+## Qué hay
 
-- `index.html`: estructura y referencias locales.
-- `css/palabreo.css`: bloque CSS original.
-- `js/theme.js`: tema, ejecutado en la cabecera antes de aplicar estilos.
-- `js/game.js`: diccionarios integrados, reglas, interfaz, estadísticas y funciones locales.
-- `js/auth.js`: autenticación original.
-- `js/competitions.js`: ligas, competición y rankings originales.
+- `index.html`, `css/` y `js/`: juego editable, sin dependencias npm.
+- `data/`, `DICTIONARY.md` y `licenses/`: diccionarios nuevos, selección y licencias. Los listados originales de cinco letras se conservan sin cambios.
+- `dist/assets/Palabra.html`: archivo único generado para Android.
+- `android-reference/`: DEX, manifiesto y recursos originales compilados, no fuentes Java/Kotlin.
+- `tools/`: construcción del asset, APK y SQL; no genera claves de firma.
+- `sql/observed/`: funciones reales aportadas por el usuario, como referencia. No es un volcado completo del servidor.
+- `sql/migrations/palabreo_1_20.sql`: actualización transaccional preparada y probada localmente; NO aplicada en Supabase.
+- `sql/COPIAR-ACTUALIZACION.html`: copia íntegra del SQL con botón para copiar. No ejecuta SQL.
+- `tests/` y `validation/`: pruebas y resultados, con las limitaciones indicadas.
 
-Los scripts siguen siendo clásicos, sin `defer`, `async` ni módulos: se mantiene su orden y ámbito compartido. La separación es mecánica. `RECOVERY-MAP.json` conserva los hashes de los bloques y del HTML original. No se necesitan npm, dependencias JavaScript ni un proceso de compilación para jugar en el navegador.
+## Jugar y construir
 
-## Ejecutar y reconstruir el asset
-
-Desde `/workspace/Pruebas` (o desde la raíz donde se descomprima el ZIP):
+Desde la raíz del proyecto:
 
 ```sh
 python -m http.server 8000 --bind 127.0.0.1
-```
-
-Abrir `index.html` a través del servidor local. Parar con Ctrl+C. Cada tarea en la nube ya tiene su entorno aislado; utilizar este checkout, sin crear worktrees salvo petición expresa.
-
-Para reconstruir el archivo único destinado a la WebView Android:
-
-```sh
 python tools/build_html.py
 ```
 
-Produce `dist/assets/Palabra.html`. En esta recuperación su SHA-256 coincide exactamente con el original:
-`ac77d38068ac465fac3979f2660d3f01884e294f394aa75fc97666dab69d3f0e`.
-El script informa de la coincidencia; tras futuras ediciones es normal que cambie el hash. No compila ni firma una APK.
+El primer comando sirve el proyecto localmente; terminarlo con Ctrl+C cuando ya no se necesite. El segundo se ejecuta en otra terminal y genera el asset único. El entorno de cada tarea ya está aislado; reutilizar el checkout sin crear worktrees salvo petición expresa.
 
-## Validación realizada
+En modo libre se elige longitud 5, 6 o 7 con un selector independiente de Normal/Difícil/Tildes. Hay seis intentos en todas las longitudes. Cambiar de modo o longitud con una partida empezada cuenta como abandono tras confirmación. Las estadísticas se conservan por modalidad y en total, combinando longitudes; se mantiene la compatibilidad con el almacenamiento de 1.19.
 
-Los cuatro JS pasan `node --check`. `python tests/smoke.py` pasa en Chromium tanto sobre `index.html` como sobre el asset reconstruido: 12 comprobaciones por versión (24 en total), sin errores de página. Resultado detallado: `validation/browser-results.json`.
+En Global se mantienen cinco letras. Las ligas antiguas se interpretan como cinco. Las nuevas opciones 6/7/aleatoria necesitan aplicar primero el SQL del servidor. La longitud solo se elige al crear la liga; el número de palabras al día sigue siendo independiente. La asignación diaria aleatoria elige entre las tres longitudes con `floor(random()*3)+5`, guarda el resultado en el plan diario y comparte las mismas palabras con todos los miembros.
 
-Probado: carga y 30 casillas, rechazo de palabra inválida sin consumir intento, persistencia de entrada al recargar, victoria y pistas correctas en Normal, resultado compartido sin solución, nueva partida, persistencia del tema y de colores, victoria en Difícil, teclado con tildes y victoria en Tildes, derrota tras seis intentos válidos. Los aciertos se introducen por botones reales; la prueba consulta únicamente la solución de su partida local para poder completar la ronda de forma reproducible. No es una auditoría exhaustiva de todas las reglas ni una prueba en un teléfono.
+Consultar `ANDROID.md` para compilar y restaurar la firma; `sql/LEEME.md` para la actualización de la base de datos. La clave privada y su contraseña se entregan en un ZIP separado, fuera del repositorio.
 
-El test necesita Python, Playwright (versión en `tests/requirements.txt`) y Chromium en `/usr/bin/chromium`. Puede instalarse el paquete de pruebas con `python -m pip install -r tests/requirements.txt`; Chromium se instala mediante el gestor de paquetes del sistema. El entorno usado ya los proporciona. El test abre un servidor temporal, usa perfiles de navegador nuevos, bloquea TODAS las peticiones no locales y cierra el servidor al terminar. No usa cuentas reales.
+## Qué está probado
 
-## Funciones no verificadas y datos
+- Las nueve combinaciones de modo y longitud, tanto en archivos editables como en el asset único, con anchura móvil de 320 píxeles.
+- Entrada y borrado de letras, longitud, pistas/repeticiones, victoria, derrota, persistencia, colores, tema y resultado compartido.
+- Carga de partidas y estadísticas anteriores de cinco letras.
+- Migración SQL sobre PostgreSQL 17 local con datos inventados: conservación de filas previas, ACL/RLS, ligas antiguas, nuevas longitudes, idempotencia de intentos, puntuación, avisos, permisos y asignación aleatoria consistente incluso con accesos simultáneos.
+- Interfaz de ligas contra las funciones migradas locales. La autenticación/perfil/actividad social se simulan; no es una prueba de cuentas reales.
+- APK firmada con v2/v3 y construcción reproducible desde un respaldo de firma restaurado.
 
-No se ha ejecutado SQL ni realizado peticiones a Supabase. Se conservan sin cambios la URL y la clave pública publishable incluidas en el HTML; no son una copia de la base de datos ni una credencial administrativa. Autenticación, recuperación de cuenta, alias, rankings, ligas, competición global, invitaciones y avisos de palabras dependen del backend y no se han validado. No se recuperan de una APK las tablas, funciones RPC, políticas RLS, usuarios, resultados ni datos históricos del servidor. Los nombres RPC encontrados se recogen en `android-reference/INSPECCION.json`, sin ejecutarlos.
+No se ha ejecutado SQL ni realizado peticiones al servidor Supabase real. Sus metadatos se han recibido mediante consultas de solo lectura ejecutadas por el usuario. No se han recuperado ni descargado filas de usuarios, partidas, invitaciones o soluciones del servidor.
 
-Las definiciones de Wikcionario, enlaces RAE, portapapeles y compartir mediante aplicaciones externas no se han comprobado con servicios reales. Sí se ha comprobado la generación del texto compartido. Las estadísticas de pruebas son nuevas y locales: no se han recuperado las partidas guardadas en un teléfono. El almacenamiento del navegador se vincula al origen; cambiar dominio o puerto no traslada sus datos.
-
-## Android y firma: qué se conserva y qué falta
-
-La APK declara paquete `com.palabreo.app`, versión `1.19`, versionCode `20`, minSdk `26`, targetSdk y compileSdk `35`. Usa una WebView con el asset en `https://appassets.androidplatform.net/assets/Palabra.html` y puentes `PalabreoActions`, `PalabreoAppearance` y `PalabreoReminders`. Incluye actividad principal, receptor y servicio de recordatorios, permisos de Internet, notificaciones, alarmas y arranque del dispositivo.
-
-`android-reference/` conserva las otras ocho entradas de la APK, copiadas sin alteración: DEX, manifiesto y recursos compilados, iconos binarios y metadatos de firma. Son referencia binaria, no un proyecto Android editable. El código nativo existe compilado en `classes.dex`; no se han recuperado ni decompilado sus fuentes Java/Kotlin. Los recordatorios, notificaciones, sesión nativa, barras del sistema y acciones Android no se pueden validar en Chromium.
-
-Para una reconstrucción mantenible faltan las fuentes originales del contenedor Android (o su recuperación por decompilación y revisión), configuración Gradle/wrapper y dependencias, recursos/manifiesto fuente, toolchain Android SDK/Build Tools compatible con API 35 y pruebas en emulador o dispositivo. Este ZIP NO contiene una APK nueva ni un proyecto Android compilable. No se ha instalado un SDK ni intentado compilar Android en esta fase.
-
-El certificado público de firma conservado tiene sujeto `CN=Palabra personal` y huella SHA-256:
-`32:50:7F:D4:A2:5A:F4:EC:FE:33:EE:D9:4F:24:B5:2B:0A:9F:57:2F:7D:1E:F3:35:A2:A5:06:B7:D3:3A:1F:4A`.
-
-No aparece ningún almacén o archivo de clave privada en `/workspace` ni entre las nueve entradas APK. Los archivos `META-INF/PALABRA.RSA` y `.SF` contienen certificado/firma, NO la clave privada, que no puede extraerse del certificado. No se puede afirmar que la clave exista en otro equipo. Debe recuperarse el almacén original y sus credenciales por un canal seguro, o comprobar con el responsable de distribución si existe Play App Signing. No se ha consultado Google Play y no se presupone esa opción.
-
-Para actualizar directamente una instalación existente se requiere el mismo paquete, una firma compatible con la instalación (normalmente la misma clave original) y un versionCode mayor que 20. Una clave nueva ordinaria no permitirá sustituir la aplicación instalada. No desinstalarla para probar: se podrían perder datos locales. Conservar la APK antigua permite reinstalar esa versión, pero no firmar una actualización modificada. La lectura del certificado y la comprobación CRC/hash realizadas no equivalen a una verificación criptográfica completa de todos los esquemas de firma APK.
+No se han probado con servicios reales correo, contraseña, definiciones externas ni notificaciones Android. No se ha instalado la APK en un móvil. No se ha recuperado la firma antigua: la nueva APK requiere reinstalación y perderá las estadísticas locales, conforme a la autorización del usuario. Las cuentas y datos online no se borran.

@@ -53,3 +53,17 @@ def set_version(data, version):
     struct.pack_into('<I', result, offset, version)
     assert result[:offset] == data[:offset] and result[offset+4:] == data[offset+4:]
     return bytes(result)
+
+def set_version_name(data, name):
+    elements, _ = inspect(data)
+    old = elements[0]['attributes']['versionName']
+    if len(name) != len(old) or not name.isascii():
+        raise ValueError('This preservation build requires a same-length ASCII versionName')
+    for encoding in ['utf-16le', 'utf-8']:
+        before, after = old.encode(encoding), name.encode(encoding)
+        if data.count(before) == 1:
+            result = data.replace(before, after, 1)
+            observed, _ = inspect(result)
+            if observed[0]['attributes']['versionName'] == name:
+                return result
+    raise ValueError('Cannot safely locate versionName in compiled manifest')

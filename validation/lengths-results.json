@@ -1,0 +1,177 @@
+{
+  "matrix": [
+    {
+      "entry": "/index.html",
+      "length": 5,
+      "mode": "normal",
+      "win_and_persistence": true,
+      "share_width": 5,
+      "loss_checked": true,
+      "mobile_width": 320
+    },
+    {
+      "entry": "/index.html",
+      "length": 5,
+      "mode": "hard",
+      "win_and_persistence": true,
+      "share_width": 5,
+      "loss_checked": false,
+      "mobile_width": 320
+    },
+    {
+      "entry": "/index.html",
+      "length": 5,
+      "mode": "accents",
+      "win_and_persistence": true,
+      "share_width": 5,
+      "loss_checked": true,
+      "mobile_width": 320
+    },
+    {
+      "entry": "/index.html",
+      "length": 6,
+      "mode": "normal",
+      "win_and_persistence": true,
+      "share_width": 6,
+      "loss_checked": true,
+      "mobile_width": 320
+    },
+    {
+      "entry": "/index.html",
+      "length": 6,
+      "mode": "hard",
+      "win_and_persistence": true,
+      "share_width": 6,
+      "loss_checked": false,
+      "mobile_width": 320
+    },
+    {
+      "entry": "/index.html",
+      "length": 6,
+      "mode": "accents",
+      "win_and_persistence": true,
+      "share_width": 6,
+      "loss_checked": true,
+      "mobile_width": 320
+    },
+    {
+      "entry": "/index.html",
+      "length": 7,
+      "mode": "normal",
+      "win_and_persistence": true,
+      "share_width": 7,
+      "loss_checked": true,
+      "mobile_width": 320
+    },
+    {
+      "entry": "/index.html",
+      "length": 7,
+      "mode": "hard",
+      "win_and_persistence": true,
+      "share_width": 7,
+      "loss_checked": false,
+      "mobile_width": 320
+    },
+    {
+      "entry": "/index.html",
+      "length": 7,
+      "mode": "accents",
+      "win_and_persistence": true,
+      "share_width": 7,
+      "loss_checked": true,
+      "mobile_width": 320
+    },
+    {
+      "entry": "/dist/assets/Palabra.html",
+      "length": 5,
+      "mode": "normal",
+      "win_and_persistence": true,
+      "share_width": 5,
+      "loss_checked": true,
+      "mobile_width": 320
+    },
+    {
+      "entry": "/dist/assets/Palabra.html",
+      "length": 5,
+      "mode": "hard",
+      "win_and_persistence": true,
+      "share_width": 5,
+      "loss_checked": false,
+      "mobile_width": 320
+    },
+    {
+      "entry": "/dist/assets/Palabra.html",
+      "length": 5,
+      "mode": "accents",
+      "win_and_persistence": true,
+      "share_width": 5,
+      "loss_checked": true,
+      "mobile_width": 320
+    },
+    {
+      "entry": "/dist/assets/Palabra.html",
+      "length": 6,
+      "mode": "normal",
+      "win_and_persistence": true,
+      "share_width": 6,
+      "loss_checked": true,
+      "mobile_width": 320
+    },
+    {
+      "entry": "/dist/assets/Palabra.html",
+      "length": 6,
+      "mode": "hard",
+      "win_and_persistence": true,
+      "share_width": 6,
+      "loss_checked": false,
+      "mobile_width": 320
+    },
+    {
+      "entry": "/dist/assets/Palabra.html",
+      "length": 6,
+      "mode": "accents",
+      "win_and_persistence": true,
+      "share_width": 6,
+      "loss_checked": true,
+      "mobile_width": 320
+    },
+    {
+      "entry": "/dist/assets/Palabra.html",
+      "length": 7,
+      "mode": "normal",
+      "win_and_persistence": true,
+      "share_width": 7,
+      "loss_checked": true,
+      "mobile_width": 320
+    },
+    {
+      "entry": "/dist/assets/Palabra.html",
+      "length": 7,
+      "mode": "hard",
+      "win_and_persistence": true,
+      "share_width": 7,
+      "loss_checked": false,
+      "mobile_width": 320
+    },
+    {
+      "entry": "/dist/assets/Palabra.html",
+      "length": 7,
+      "mode": "accents",
+      "win_and_persistence": true,
+      "share_width": 7,
+      "loss_checked": true,
+      "mobile_width": 320
+    }
+  ],
+  "additional_checks": [
+    "duplicate scoring",
+    "hard clue at position 7",
+    "return to free play",
+    "global forced to 5",
+    "legacy league defaults to 5",
+    "6/7 packet rendering only (no backend test)",
+    "v2 saved-game/statistics migration"
+  ],
+  "page_errors": [],
+  "blocked_requests": []
+}

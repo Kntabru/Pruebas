@@ -1,0 +1,33 @@
+{
+  "frequency_sha256": "b4794c425f3500c21a0ff9367175e36795a978c928a36670e9ad6ae206fb7728",
+  "frequency_commit": "525f9b560de45753a5ea01069454e72e9aa541c6",
+  "frequency_source": "https://github.com/hermitdave/FrequencyWords/blob/525f9b560de45753a5ea01069454e72e9aa541c6/content/2018/es/es_full.txt",
+  "hunspell_aff_sha256": "e73a9bf8e1383f4986a5dc9e2fbed49371c0c61f511c626d15586bd433c1cad9",
+  "hunspell_dic_sha256": "6975dddec3d5d2c676069537bc67b4b5f786c65c5d4cf6703a82acf779ac9ec1",
+  "counts": {
+    "6": {
+      "normal": {
+        "candidates": 12938,
+        "accepted": 10000,
+        "solutions": 3000
+      },
+      "accents": {
+        "candidates": 14316,
+        "accepted": 10000,
+        "solutions": 3000
+      }
+    },
+    "7": {
+      "normal": {
+        "candidates": 21938,
+        "accepted": 10000,
+        "solutions": 3000
+      },
+      "accents": {
+        "candidates": 23942,
+        "accepted": 10000,
+        "solutions": 3000
+      }
+    }
+  }
+}

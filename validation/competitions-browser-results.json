@@ -1,0 +1,58 @@
+{
+  "results": [
+    {
+      "league_mode": "5",
+      "round_length": 5,
+      "created_opened_and_won_through_ui": true
+    },
+    {
+      "league_mode": "6",
+      "round_length": 6,
+      "created_opened_and_won_through_ui": true
+    },
+    {
+      "league_mode": "7",
+      "round_length": 7,
+      "created_opened_and_won_through_ui": true
+    },
+    {
+      "league_mode": "random",
+      "round_length": 7,
+      "created_opened_and_won_through_ui": true
+    }
+  ],
+  "global_five_checked": true,
+  "rpc_calls_to_local_database": [
+    "palabreo_leagues",
+    "palabreo_leagues",
+    "palabreo_create_league",
+    "palabreo_leagues",
+    "palabreo_day",
+    "palabreo_open_round",
+    "palabreo_guess",
+    "palabreo_leagues",
+    "palabreo_create_league_v120",
+    "palabreo_leagues",
+    "palabreo_day",
+    "palabreo_open_round",
+    "palabreo_guess",
+    "palabreo_leagues",
+    "palabreo_create_league_v120",
+    "palabreo_leagues",
+    "palabreo_day",
+    "palabreo_open_round",
+    "palabreo_guess",
+    "palabreo_leagues",
+    "palabreo_create_league_v120",
+    "palabreo_leagues",
+    "palabreo_day",
+    "palabreo_open_round",
+    "palabreo_guess",
+    "palabreo_day",
+    "palabreo_open_round"
+  ],
+  "page_errors": [],
+  "blocked_requests": [],
+  "live_supabase_contacted": false,
+  "limitations": "Synthetic auth/profile/social responses; game create/day/open/guess use real migrated local SQL. No Android device test."
+}

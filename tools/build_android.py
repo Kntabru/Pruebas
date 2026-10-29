@@ -7,25 +7,31 @@ import struct
 import subprocess
 import sys
 import zipfile
-from android_manifest import inspect, set_version
+from android_manifest import inspect, set_version, set_version_name
 
 root = Path(__file__).resolve().parents[1]
 parser = argparse.ArgumentParser()
 parser.add_argument('--signing-dir', required=True, type=Path, help='Private backup directory containing release.p12 and key-password.txt')
 parser.add_argument('--apksigner-dir', required=True, type=Path, help='Directory containing apksigner and apksig jars')
-parser.add_argument('--version-code', type=int, default=21)
+parser.add_argument('--version-code', type=int, default=22)
+parser.add_argument('--version-name', default='1.20')
 args = parser.parse_args()
 private = args.signing_dir.resolve()
 if private == root or root in private.parents:
     raise SystemExit('Signing material must stay outside the Git repository')
+for required in ['release.p12','key-password.txt']:
+    if not (private/required).is_file():
+        raise SystemExit('Falta la firma original recuperada: '+str(private/required)+'. Restaura el respaldo privado; NO se generará otra clave.')
+if not list(args.apksigner_dir.glob('apksigner*.jar')) or not list(args.apksigner_dir.glob('apksig-*.jar')):
+    raise SystemExit('Faltan las herramientas apksigner; ejecuta tools/install_android_tools.py.')
 subprocess.run([sys.executable, str(root/'tools/build_html.py')], check=True)
 reference = root/'android-reference'
 output = root/'android-build'
 output.mkdir(exist_ok=True)
 unsigned = output/'Palabreo-unsigned.apk'
-signed = output/f'Palabreo-1.19-recuperada-v{args.version_code}.apk'
+signed = output/f'Palabreo {args.version_name}.apk'
 old_manifest = (reference/'AndroidManifest.xml').read_bytes()
-manifest = set_version(old_manifest, args.version_code)
+manifest = set_version_name(set_version(old_manifest, args.version_code), args.version_name)
 with zipfile.ZipFile(unsigned, 'w') as z:
     files = [('AndroidManifest.xml', manifest),
              ('res/drawable/ic_launcher.xml', (reference/'res/drawable/ic_launcher.xml').read_bytes()),
@@ -50,6 +56,10 @@ subprocess.run(java+['sign', '--ks', str(private/'release.p12'), '--ks-type', 'P
     '--v2-signing-enabled', 'true', '--v3-signing-enabled', 'true', '--v4-signing-enabled', 'false',
     '--out', str(signed), str(unsigned)], check=True)
 verification = subprocess.run(java+['verify', '--verbose', '--print-certs', str(signed)], check=True, capture_output=True, text=True).stdout
+expected_certificate = '8d1b1c337dfa5ba83e3f85e987d4785f5af9ad7f4ad1909c0b3dc431d67d3b5e'
+if 'certificate SHA-256 digest: '+expected_certificate not in verification:
+    signed.unlink(missing_ok=True)
+    raise SystemExit('Firma inesperada. Restaura el respaldo original de esta recuperación; no usar otra clave.')
 (output/'signature-verification.txt').write_text(verification)
 print(verification)
 with zipfile.ZipFile(signed) as z:

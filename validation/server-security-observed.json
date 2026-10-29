@@ -1,0 +1,273 @@
+[
+  {
+    "type": "objeto",
+    "schema": "palabreo_private",
+    "name": "daily_plans",
+    "details": {
+      "rls": true,
+      "permisos": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres}",
+      "propietario": "postgres",
+      "rls_forzada": false
+    }
+  },
+  {
+    "type": "objeto",
+    "schema": "palabreo_private",
+    "name": "daily_word_reservations",
+    "details": {
+      "rls": true,
+      "permisos": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres}",
+      "propietario": "postgres",
+      "rls_forzada": false
+    }
+  },
+  {
+    "type": "objeto",
+    "schema": "palabreo_private",
+    "name": "direct_invitations",
+    "details": {
+      "rls": true,
+      "permisos": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres}",
+      "propietario": "postgres",
+      "rls_forzada": false
+    }
+  },
+  {
+    "type": "objeto",
+    "schema": "palabreo_private",
+    "name": "global_ranking_settings",
+    "details": {
+      "rls": true,
+      "permisos": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres}",
+      "propietario": "postgres",
+      "rls_forzada": false
+    }
+  },
+  {
+    "type": "objeto",
+    "schema": "palabreo_private",
+    "name": "guesses",
+    "details": {
+      "rls": true,
+      "permisos": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres}",
+      "propietario": "postgres",
+      "rls_forzada": false
+    }
+  },
+  {
+    "type": "objeto",
+    "schema": "palabreo_private",
+    "name": "invitations",
+    "details": {
+      "rls": true,
+      "permisos": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres}",
+      "propietario": "postgres",
+      "rls_forzada": false
+    }
+  },
+  {
+    "type": "esquema",
+    "schema": "palabreo_private",
+    "name": "palabreo_private",
+    "details": {
+      "permisos": "{postgres=UC/postgres,service_role=U/postgres}",
+      "propietario": "postgres"
+    }
+  },
+  {
+    "type": "objeto",
+    "schema": "palabreo_private",
+    "name": "solutions",
+    "details": {
+      "rls": true,
+      "permisos": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres}",
+      "propietario": "postgres",
+      "rls_forzada": false
+    }
+  },
+  {
+    "type": "trigger",
+    "schema": "palabreo_private",
+    "name": "solutions",
+    "details": {
+      "nombre": "reserve_daily_word",
+      "definicion": "CREATE TRIGGER reserve_daily_word BEFORE INSERT OR UPDATE ON palabreo_private.solutions FOR EACH ROW EXECUTE FUNCTION palabreo_private.reserve_daily_word()"
+    }
+  },
+  {
+    "type": "objeto",
+    "schema": "palabreo_private",
+    "name": "word_catalog",
+    "details": {
+      "rls": true,
+      "permisos": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres}",
+      "propietario": "postgres",
+      "rls_forzada": false
+    }
+  },
+  {
+    "type": "objeto",
+    "schema": "palabreo_private",
+    "name": "word_reports",
+    "details": {
+      "rls": true,
+      "permisos": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres}",
+      "propietario": "postgres",
+      "rls_forzada": false
+    }
+  },
+  {
+    "type": "objeto",
+    "schema": "palabreo_private",
+    "name": "word_review_queue",
+    "details": {
+      "rls": false,
+      "permisos": "{postgres=arwdDxtm/postgres,service_role=r/postgres}",
+      "propietario": "postgres",
+      "rls_forzada": false
+    }
+  },
+  {
+    "type": "objeto",
+    "schema": "public",
+    "name": "challenges",
+    "details": {
+      "rls": true,
+      "permisos": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=r/postgres}",
+      "propietario": "postgres",
+      "rls_forzada": false
+    }
+  },
+  {
+    "type": "RLS",
+    "schema": "public",
+    "name": "challenges",
+    "details": {
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "using": "((league_id IS NULL) OR palabreo_is_member(league_id))",
+      "comando": "SELECT",
+      "politica": "challenges_read"
+    }
+  },
+  {
+    "type": "trigger",
+    "schema": "public",
+    "name": "challenges",
+    "details": {
+      "nombre": "freeze_challenge",
+      "definicion": "CREATE TRIGGER freeze_challenge BEFORE UPDATE ON challenges FOR EACH ROW EXECUTE FUNCTION palabreo_private.freeze_challenge()"
+    }
+  },
+  {
+    "type": "objeto",
+    "schema": "public",
+    "name": "competition_rounds",
+    "details": {
+      "rls": true,
+      "permisos": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=r/postgres}",
+      "propietario": "postgres",
+      "rls_forzada": false
+    }
+  },
+  {
+    "type": "RLS",
+    "schema": "public",
+    "name": "competition_rounds",
+    "details": {
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "using": "(user_id = auth.uid())",
+      "comando": "SELECT",
+      "politica": "rounds_read"
+    }
+  },
+  {
+    "type": "objeto",
+    "schema": "public",
+    "name": "league_members",
+    "details": {
+      "rls": true,
+      "permisos": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=r/postgres}",
+      "propietario": "postgres",
+      "rls_forzada": false
+    }
+  },
+  {
+    "type": "RLS",
+    "schema": "public",
+    "name": "league_members",
+    "details": {
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "using": "palabreo_is_member(league_id)",
+      "comando": "SELECT",
+      "politica": "members_read"
+    }
+  },
+  {
+    "type": "objeto",
+    "schema": "public",
+    "name": "leagues",
+    "details": {
+      "rls": true,
+      "permisos": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=r/postgres}",
+      "propietario": "postgres",
+      "rls_forzada": false
+    }
+  },
+  {
+    "type": "RLS",
+    "schema": "public",
+    "name": "leagues",
+    "details": {
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "using": "palabreo_is_member(id)",
+      "comando": "SELECT",
+      "politica": "leagues_read"
+    }
+  },
+  {
+    "type": "objeto",
+    "schema": "public",
+    "name": "profiles",
+    "details": {
+      "rls": true,
+      "permisos": "{postgres=arwdDxtm/postgres,service_role=arwdDxtm/postgres,authenticated=r/postgres}",
+      "propietario": "postgres",
+      "rls_forzada": false
+    }
+  },
+  {
+    "type": "RLS",
+    "schema": "public",
+    "name": "profiles",
+    "details": {
+      "check": null,
+      "roles": [
+        "authenticated"
+      ],
+      "using": "true",
+      "comando": "SELECT",
+      "politica": "profiles_read"
+    }
+  },
+  {
+    "type": "esquema",
+    "schema": "public",
+    "name": "public",
+    "details": {
+      "permisos": "{pg_database_owner=UC/pg_database_owner,=U/pg_database_owner,postgres=U/pg_database_owner,anon=U/pg_database_owner,authenticated=U/pg_database_owner,service_role=U/pg_database_owner}",
+      "propietario": "pg_database_owner"
+    }
+  }
+]

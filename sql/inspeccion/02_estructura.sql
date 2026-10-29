@@ -20,4 +20,4 @@ WHERE n.nspname IN ('public','palabreo_private')
 UNION ALL
 SELECT 'indice',schemaname,tablename,jsonb_build_object('nombre',indexname,'definicion',indexdef)
 FROM pg_catalog.pg_indexes WHERE schemaname IN ('public','palabreo_private')
-ORDER BY esquema,objeto,tipo,detalle::text;
+ORDER BY esquema,objeto,tipo;

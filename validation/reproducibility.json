@@ -1,0 +1,12 @@
+{
+  "apk_sha256": "e0a0d4485a9a785f707db679b1ac423b6270a6bb7a5bd2cd2fff1167915c73ea",
+  "version_code": 22,
+  "version_name": "1.20",
+  "rebuilt_from_downloadable_project_and_separate_private_zip": true,
+  "used_only_bundled_public_signing_tools": true,
+  "repeat_build_identical": true,
+  "missing_key_fails_without_generation": true,
+  "original_five_letter_dictionaries_unchanged": true,
+  "long_dictionary_counts_checked": true,
+  "original_recovery_hashes_unchanged": true
+}

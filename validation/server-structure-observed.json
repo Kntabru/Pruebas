@@ -1,0 +1,831 @@
+[
+  {
+    "schema": "palabreo_private",
+    "name": "daily_plans",
+    "columns": [
+      {
+        "tipo": "text",
+        "columna": "scope_key",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "date",
+        "columna": "play_date",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "smallint",
+        "columna": "daily_words",
+        "default": null,
+        "not_null": true
+      }
+    ],
+    "constraints": [
+      {
+        "nombre": "daily_plans_daily_words_check",
+        "definicion": "CHECK (daily_words >= 3 AND daily_words <= 9)"
+      },
+      {
+        "nombre": "daily_plans_pkey",
+        "definicion": "PRIMARY KEY (scope_key, play_date)"
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX daily_plans_pkey ON palabreo_private.daily_plans USING btree (scope_key, play_date)"
+    ]
+  },
+  {
+    "schema": "palabreo_private",
+    "name": "daily_word_reservations",
+    "columns": [
+      {
+        "tipo": "date",
+        "columna": "play_date",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "text",
+        "columna": "answer",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "text",
+        "columna": "competition_kind",
+        "default": null,
+        "not_null": true
+      }
+    ],
+    "constraints": [
+      {
+        "nombre": "daily_word_reservations_answer_check",
+        "definicion": "CHECK (answer ~ '^[A-ZÑ]{5}$'::text)"
+      },
+      {
+        "nombre": "daily_word_reservations_competition_kind_check",
+        "definicion": "CHECK (competition_kind = ANY (ARRAY['global'::text, 'private'::text]))"
+      },
+      {
+        "nombre": "daily_word_reservations_pkey",
+        "definicion": "PRIMARY KEY (play_date, answer)"
+      },
+      {
+        "nombre": "daily_word_reservations_play_date_answer_competition_kind_key",
+        "definicion": "UNIQUE (play_date, answer, competition_kind)"
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX daily_word_reservations_pkey ON palabreo_private.daily_word_reservations USING btree (play_date, answer)",
+      "CREATE UNIQUE INDEX daily_word_reservations_play_date_answer_competition_kind_key ON palabreo_private.daily_word_reservations USING btree (play_date, answer, competition_kind)"
+    ]
+  },
+  {
+    "schema": "palabreo_private",
+    "name": "direct_invitations",
+    "columns": [
+      {
+        "tipo": "uuid",
+        "columna": "id",
+        "default": "gen_random_uuid()",
+        "not_null": true
+      },
+      {
+        "tipo": "uuid",
+        "columna": "league_id",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "uuid",
+        "columna": "recipient_id",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "uuid",
+        "columna": "created_by",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "timestamp with time zone",
+        "columna": "expires_at",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "text",
+        "columna": "status",
+        "default": "'pending'::text",
+        "not_null": true
+      }
+    ],
+    "constraints": [
+      {
+        "nombre": "direct_invitations_created_by_fkey",
+        "definicion": "FOREIGN KEY (created_by) REFERENCES profiles(id)"
+      },
+      {
+        "nombre": "direct_invitations_league_id_fkey",
+        "definicion": "FOREIGN KEY (league_id) REFERENCES leagues(id) ON DELETE CASCADE"
+      },
+      {
+        "nombre": "direct_invitations_league_id_recipient_id_key",
+        "definicion": "UNIQUE (league_id, recipient_id)"
+      },
+      {
+        "nombre": "direct_invitations_pkey",
+        "definicion": "PRIMARY KEY (id)"
+      },
+      {
+        "nombre": "direct_invitations_recipient_id_fkey",
+        "definicion": "FOREIGN KEY (recipient_id) REFERENCES profiles(id) ON DELETE CASCADE"
+      },
+      {
+        "nombre": "direct_invitations_status_check",
+        "definicion": "CHECK (status = ANY (ARRAY['pending'::text, 'accepted'::text, 'declined'::text]))"
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX direct_invitations_pkey ON palabreo_private.direct_invitations USING btree (id)",
+      "CREATE UNIQUE INDEX direct_invitations_league_id_recipient_id_key ON palabreo_private.direct_invitations USING btree (league_id, recipient_id)"
+    ]
+  },
+  {
+    "schema": "palabreo_private",
+    "name": "global_ranking_settings",
+    "columns": [
+      {
+        "tipo": "boolean",
+        "columna": "singleton",
+        "default": "true",
+        "not_null": true
+      },
+      {
+        "tipo": "timestamp with time zone",
+        "columna": "launch_from",
+        "default": "'-infinity'::timestamp with time zone",
+        "not_null": true
+      },
+      {
+        "tipo": "timestamp with time zone",
+        "columna": "history_from",
+        "default": "'-infinity'::timestamp with time zone",
+        "not_null": true
+      }
+    ],
+    "constraints": [
+      {
+        "nombre": "global_ranking_settings_pkey",
+        "definicion": "PRIMARY KEY (singleton)"
+      },
+      {
+        "nombre": "global_ranking_settings_singleton_check",
+        "definicion": "CHECK (singleton)"
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX global_ranking_settings_pkey ON palabreo_private.global_ranking_settings USING btree (singleton)"
+    ]
+  },
+  {
+    "schema": "palabreo_private",
+    "name": "guesses",
+    "columns": [
+      {
+        "tipo": "uuid",
+        "columna": "round_id",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "smallint",
+        "columna": "attempt_number",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "text",
+        "columna": "guess",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "jsonb",
+        "columna": "clues",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "timestamp with time zone",
+        "columna": "created_at",
+        "default": "now()",
+        "not_null": true
+      },
+      {
+        "tipo": "uuid",
+        "columna": "request_id",
+        "default": null,
+        "not_null": false
+      }
+    ],
+    "constraints": [
+      {
+        "nombre": "guesses_attempt_number_check",
+        "definicion": "CHECK (attempt_number >= 1 AND attempt_number <= 6)"
+      },
+      {
+        "nombre": "guesses_clues_check",
+        "definicion": "CHECK (jsonb_typeof(clues) = 'array'::text AND jsonb_array_length(clues) = 5)"
+      },
+      {
+        "nombre": "guesses_guess_check",
+        "definicion": "CHECK (guess ~ '^[A-ZÑ]{5}$'::text)"
+      },
+      {
+        "nombre": "guesses_pkey",
+        "definicion": "PRIMARY KEY (round_id, attempt_number)"
+      },
+      {
+        "nombre": "guesses_round_id_fkey",
+        "definicion": "FOREIGN KEY (round_id) REFERENCES competition_rounds(id) ON DELETE CASCADE"
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX guesses_pkey ON palabreo_private.guesses USING btree (round_id, attempt_number)",
+      "CREATE UNIQUE INDEX guesses_request_id ON palabreo_private.guesses USING btree (round_id, request_id) WHERE (request_id IS NOT NULL)"
+    ]
+  },
+  {
+    "schema": "palabreo_private",
+    "name": "invitations",
+    "columns": [
+      {
+        "tipo": "uuid",
+        "columna": "id",
+        "default": "gen_random_uuid()",
+        "not_null": true
+      },
+      {
+        "tipo": "uuid",
+        "columna": "league_id",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "uuid",
+        "columna": "created_by",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "text",
+        "columna": "token_hash",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "timestamp with time zone",
+        "columna": "expires_at",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "timestamp with time zone",
+        "columna": "revoked_at",
+        "default": null,
+        "not_null": false
+      },
+      {
+        "tipo": "integer",
+        "columna": "max_uses",
+        "default": "20",
+        "not_null": true
+      },
+      {
+        "tipo": "integer",
+        "columna": "uses",
+        "default": "0",
+        "not_null": true
+      }
+    ],
+    "constraints": [
+      {
+        "nombre": "invitations_check",
+        "definicion": "CHECK (uses >= 0 AND uses <= max_uses)"
+      },
+      {
+        "nombre": "invitations_created_by_fkey",
+        "definicion": "FOREIGN KEY (created_by) REFERENCES profiles(id)"
+      },
+      {
+        "nombre": "invitations_league_id_fkey",
+        "definicion": "FOREIGN KEY (league_id) REFERENCES leagues(id) ON DELETE CASCADE"
+      },
+      {
+        "nombre": "invitations_max_uses_check",
+        "definicion": "CHECK (max_uses > 0)"
+      },
+      {
+        "nombre": "invitations_pkey",
+        "definicion": "PRIMARY KEY (id)"
+      },
+      {
+        "nombre": "invitations_token_hash_check",
+        "definicion": "CHECK (token_hash ~ '^[0-9a-f]{64}$'::text)"
+      },
+      {
+        "nombre": "invitations_token_hash_key",
+        "definicion": "UNIQUE (token_hash)"
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX invitations_pkey ON palabreo_private.invitations USING btree (id)",
+      "CREATE UNIQUE INDEX invitations_token_hash_key ON palabreo_private.invitations USING btree (token_hash)"
+    ]
+  },
+  {
+    "schema": "palabreo_private",
+    "name": "solutions",
+    "columns": [
+      {
+        "tipo": "uuid",
+        "columna": "challenge_id",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "text",
+        "columna": "answer",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "date",
+        "columna": "play_date",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "text",
+        "columna": "competition_kind",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "uuid",
+        "columna": "scope_key",
+        "default": null,
+        "not_null": true
+      }
+    ],
+    "constraints": [
+      {
+        "nombre": "solutions_answer_check",
+        "definicion": "CHECK (answer ~ '^[A-ZÑ]{5}$'::text)"
+      },
+      {
+        "nombre": "solutions_challenge_id_fkey",
+        "definicion": "FOREIGN KEY (challenge_id) REFERENCES challenges(id) ON DELETE CASCADE"
+      },
+      {
+        "nombre": "solutions_pkey",
+        "definicion": "PRIMARY KEY (challenge_id)"
+      },
+      {
+        "nombre": "solutions_play_date_answer_competition_kind_fkey",
+        "definicion": "FOREIGN KEY (play_date, answer, competition_kind) REFERENCES palabreo_private.daily_word_reservations(play_date, answer, competition_kind)"
+      },
+      {
+        "nombre": "solutions_play_date_scope_key_answer_key",
+        "definicion": "UNIQUE (play_date, scope_key, answer)"
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX solutions_pkey ON palabreo_private.solutions USING btree (challenge_id)",
+      "CREATE UNIQUE INDEX solutions_play_date_scope_key_answer_key ON palabreo_private.solutions USING btree (play_date, scope_key, answer)"
+    ]
+  },
+  {
+    "schema": "palabreo_private",
+    "name": "word_catalog",
+    "columns": [
+      {
+        "tipo": "text",
+        "columna": "word",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "boolean",
+        "columna": "is_answer",
+        "default": "false",
+        "not_null": true
+      }
+    ],
+    "constraints": [
+      {
+        "nombre": "word_catalog_pkey",
+        "definicion": "PRIMARY KEY (word)"
+      },
+      {
+        "nombre": "word_catalog_word_check",
+        "definicion": "CHECK (word ~ '^[A-ZÑ]{5}$'::text)"
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX word_catalog_pkey ON palabreo_private.word_catalog USING btree (word)"
+    ]
+  },
+  {
+    "schema": "palabreo_private",
+    "name": "word_reports",
+    "columns": [
+      {
+        "tipo": "text",
+        "columna": "word",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "uuid",
+        "columna": "user_id",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "timestamp with time zone",
+        "columna": "created_at",
+        "default": "clock_timestamp()",
+        "not_null": true
+      }
+    ],
+    "constraints": [
+      {
+        "nombre": "word_reports_pkey",
+        "definicion": "PRIMARY KEY (word, user_id)"
+      },
+      {
+        "nombre": "word_reports_user_id_fkey",
+        "definicion": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE"
+      },
+      {
+        "nombre": "word_reports_word_fkey",
+        "definicion": "FOREIGN KEY (word) REFERENCES palabreo_private.word_catalog(word)"
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX word_reports_pkey ON palabreo_private.word_reports USING btree (word, user_id)"
+    ]
+  },
+  {
+    "schema": "palabreo_private",
+    "name": "word_review_queue",
+    "columns": [
+      {
+        "tipo": "text",
+        "columna": "word",
+        "default": null,
+        "not_null": false
+      },
+      {
+        "tipo": "bigint",
+        "columna": "reports",
+        "default": null,
+        "not_null": false
+      },
+      {
+        "tipo": "timestamp with time zone",
+        "columna": "first_report",
+        "default": null,
+        "not_null": false
+      },
+      {
+        "tipo": "timestamp with time zone",
+        "columna": "last_report",
+        "default": null,
+        "not_null": false
+      },
+      {
+        "tipo": "boolean",
+        "columna": "is_answer",
+        "default": null,
+        "not_null": false
+      }
+    ],
+    "constraints": null,
+    "indexes": null
+  },
+  {
+    "schema": "public",
+    "name": "challenges",
+    "columns": [
+      {
+        "tipo": "uuid",
+        "columna": "id",
+        "default": "gen_random_uuid()",
+        "not_null": true
+      },
+      {
+        "tipo": "uuid",
+        "columna": "league_id",
+        "default": null,
+        "not_null": false
+      },
+      {
+        "tipo": "date",
+        "columna": "play_date",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "smallint",
+        "columna": "slot",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "timestamp with time zone",
+        "columna": "created_at",
+        "default": "now()",
+        "not_null": true
+      }
+    ],
+    "constraints": [
+      {
+        "nombre": "challenges_league_id_fkey",
+        "definicion": "FOREIGN KEY (league_id) REFERENCES leagues(id) ON DELETE CASCADE"
+      },
+      {
+        "nombre": "challenges_pkey",
+        "definicion": "PRIMARY KEY (id)"
+      },
+      {
+        "nombre": "challenges_slot_check",
+        "definicion": "CHECK (slot >= 1 AND slot <= 9)"
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX challenges_pkey ON public.challenges USING btree (id)",
+      "CREATE UNIQUE INDEX challenges_global_day ON public.challenges USING btree (play_date, slot) WHERE (league_id IS NULL)",
+      "CREATE UNIQUE INDEX challenges_league_day ON public.challenges USING btree (league_id, play_date, slot) WHERE (league_id IS NOT NULL)",
+      "CREATE INDEX challenges_date ON public.challenges USING btree (play_date)"
+    ]
+  },
+  {
+    "schema": "public",
+    "name": "competition_rounds",
+    "columns": [
+      {
+        "tipo": "uuid",
+        "columna": "id",
+        "default": "gen_random_uuid()",
+        "not_null": true
+      },
+      {
+        "tipo": "uuid",
+        "columna": "challenge_id",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "uuid",
+        "columna": "user_id",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "text",
+        "columna": "status",
+        "default": "'playing'::text",
+        "not_null": true
+      },
+      {
+        "tipo": "smallint",
+        "columna": "attempts",
+        "default": "0",
+        "not_null": true
+      },
+      {
+        "tipo": "timestamp with time zone",
+        "columna": "started_at",
+        "default": "now()",
+        "not_null": true
+      },
+      {
+        "tipo": "timestamp with time zone",
+        "columna": "finished_at",
+        "default": null,
+        "not_null": false
+      },
+      {
+        "tipo": "bigint",
+        "columna": "duration_ms",
+        "default": null,
+        "not_null": false
+      },
+      {
+        "tipo": "integer",
+        "columna": "points",
+        "default": "\\nCASE\\n    WHEN (status = 'won'::text) THEN palabreo_points((attempts)::integer)\\n    ELSE 0\\nEND",
+        "not_null": false
+      }
+    ],
+    "constraints": [
+      {
+        "nombre": "competition_rounds_attempts_check",
+        "definicion": "CHECK (attempts >= 0 AND attempts <= 6)"
+      },
+      {
+        "nombre": "competition_rounds_challenge_id_fkey",
+        "definicion": "FOREIGN KEY (challenge_id) REFERENCES challenges(id) ON DELETE CASCADE"
+      },
+      {
+        "nombre": "competition_rounds_challenge_id_user_id_key",
+        "definicion": "UNIQUE (challenge_id, user_id)"
+      },
+      {
+        "nombre": "competition_rounds_check",
+        "definicion": "CHECK (status = 'playing'::text AND finished_at IS NULL AND duration_ms IS NULL AND attempts < 6 OR status = 'won'::text AND attempts >= 1 AND attempts <= 6 AND finished_at IS NOT NULL AND duration_ms IS NOT NULL OR status = 'lost'::text AND attempts = 6 AND finished_at IS NOT NULL AND duration_ms IS NOT NULL OR status = 'abandoned'::text AND finished_at IS NOT NULL)"
+      },
+      {
+        "nombre": "competition_rounds_check1",
+        "definicion": "CHECK (finished_at IS NULL OR finished_at >= started_at)"
+      },
+      {
+        "nombre": "competition_rounds_duration_ms_check",
+        "definicion": "CHECK (duration_ms >= 0)"
+      },
+      {
+        "nombre": "competition_rounds_pkey",
+        "definicion": "PRIMARY KEY (id)"
+      },
+      {
+        "nombre": "competition_rounds_status_check",
+        "definicion": "CHECK (status = ANY (ARRAY['playing'::text, 'won'::text, 'lost'::text, 'abandoned'::text]))"
+      },
+      {
+        "nombre": "competition_rounds_user_id_fkey",
+        "definicion": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE"
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX competition_rounds_pkey ON public.competition_rounds USING btree (id)",
+      "CREATE UNIQUE INDEX competition_rounds_challenge_id_user_id_key ON public.competition_rounds USING btree (challenge_id, user_id)",
+      "CREATE INDEX competition_rounds_user ON public.competition_rounds USING btree (user_id)"
+    ]
+  },
+  {
+    "schema": "public",
+    "name": "league_members",
+    "columns": [
+      {
+        "tipo": "uuid",
+        "columna": "league_id",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "uuid",
+        "columna": "user_id",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "timestamp with time zone",
+        "columna": "joined_at",
+        "default": "now()",
+        "not_null": true
+      },
+      {
+        "tipo": "timestamp with time zone",
+        "columna": "left_at",
+        "default": null,
+        "not_null": false
+      }
+    ],
+    "constraints": [
+      {
+        "nombre": "league_members_check",
+        "definicion": "CHECK (left_at IS NULL OR left_at >= joined_at)"
+      },
+      {
+        "nombre": "league_members_league_id_fkey",
+        "definicion": "FOREIGN KEY (league_id) REFERENCES leagues(id) ON DELETE CASCADE"
+      },
+      {
+        "nombre": "league_members_pkey",
+        "definicion": "PRIMARY KEY (league_id, user_id)"
+      },
+      {
+        "nombre": "league_members_user_id_fkey",
+        "definicion": "FOREIGN KEY (user_id) REFERENCES profiles(id) ON DELETE CASCADE"
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX league_members_pkey ON public.league_members USING btree (league_id, user_id)"
+    ]
+  },
+  {
+    "schema": "public",
+    "name": "leagues",
+    "columns": [
+      {
+        "tipo": "uuid",
+        "columna": "id",
+        "default": "gen_random_uuid()",
+        "not_null": true
+      },
+      {
+        "tipo": "text",
+        "columna": "name",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "uuid",
+        "columna": "owner_id",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "timestamp with time zone",
+        "columna": "created_at",
+        "default": "now()",
+        "not_null": true
+      },
+      {
+        "tipo": "smallint",
+        "columna": "daily_words",
+        "default": "3",
+        "not_null": true
+      }
+    ],
+    "constraints": [
+      {
+        "nombre": "leagues_daily_words_check",
+        "definicion": "CHECK (daily_words >= 3 AND daily_words <= 9)"
+      },
+      {
+        "nombre": "leagues_name_check",
+        "definicion": "CHECK (length(name) >= 3 AND length(name) <= 60)"
+      },
+      {
+        "nombre": "leagues_owner_id_fkey",
+        "definicion": "FOREIGN KEY (owner_id) REFERENCES profiles(id)"
+      },
+      {
+        "nombre": "leagues_pkey",
+        "definicion": "PRIMARY KEY (id)"
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX leagues_pkey ON public.leagues USING btree (id)"
+    ]
+  },
+  {
+    "schema": "public",
+    "name": "profiles",
+    "columns": [
+      {
+        "tipo": "uuid",
+        "columna": "id",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "text",
+        "columna": "alias",
+        "default": null,
+        "not_null": true
+      },
+      {
+        "tipo": "timestamp with time zone",
+        "columna": "created_at",
+        "default": "now()",
+        "not_null": true
+      }
+    ],
+    "constraints": [
+      {
+        "nombre": "profiles_alias_check",
+        "definicion": "CHECK (length(alias) >= 3 AND length(alias) <= 48)"
+      },
+      {
+        "nombre": "profiles_id_fkey",
+        "definicion": "FOREIGN KEY (id) REFERENCES auth.users(id) ON DELETE CASCADE"
+      },
+      {
+        "nombre": "profiles_pkey",
+        "definicion": "PRIMARY KEY (id)"
+      }
+    ],
+    "indexes": [
+      "CREATE UNIQUE INDEX profiles_pkey ON public.profiles USING btree (id)",
+      "CREATE UNIQUE INDEX profiles_alias_unique ON public.profiles USING btree (lower(alias))"
+    ]
+  }
+]
