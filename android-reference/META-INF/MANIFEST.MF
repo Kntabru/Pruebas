@@ -1,0 +1,20 @@
+Manifest-Version: 1.0
+
+Name: AndroidManifest.xml
+SHA-256-Digest: 7DfucI9WK18hheQPchNfVDZ6n6I0fafdeSgDQvG5GjA=
+
+Name: assets/Palabra.html
+SHA-256-Digest: rHfTgGisRl+sOXnyZg0/AYhOKU85SqdfyXZm2radPw4=
+
+Name: classes.dex
+SHA-256-Digest: kYxAoCcxY9Xx93TSBS5oVxvKzOxAGby0dGuuz9KzeKY=
+
+Name: res/drawable/ic_launcher.xml
+SHA-256-Digest: pC6FeQu0xWamht7F2UXGDablGdFsZQ+2WXyjsufCtow=
+
+Name: res/drawable/ic_notification.xml
+SHA-256-Digest: xz/bf5RlSncAKq4ImJL+6PxHpXllqOy6nMzZU4QmFPA=
+
+Name: resources.arsc
+SHA-256-Digest: pE8i69Rt4U40e6el9KgS58VmKmtKaegj4nf0m3oEQbE=
+

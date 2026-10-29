@@ -1,0 +1,40 @@
+[
+  {
+    "entry": "/index.html",
+    "passed": [
+      "load",
+      "30 tiles",
+      "invalid word",
+      "partial input persistence",
+      "normal victory and clues",
+      "share without answer",
+      "new round",
+      "theme persistence",
+      "palette persistence",
+      "hard victory",
+      "accents keyboard and victory",
+      "six-attempt loss"
+    ],
+    "page_errors": [],
+    "blocked_external_requests": []
+  },
+  {
+    "entry": "/dist/assets/Palabra.html",
+    "passed": [
+      "load",
+      "30 tiles",
+      "invalid word",
+      "partial input persistence",
+      "normal victory and clues",
+      "share without answer",
+      "new round",
+      "theme persistence",
+      "palette persistence",
+      "hard victory",
+      "accents keyboard and victory",
+      "six-attempt loss"
+    ],
+    "page_errors": [],
+    "blocked_external_requests": []
+  }
+]

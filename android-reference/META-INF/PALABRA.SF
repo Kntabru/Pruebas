@@ -1,0 +1,23 @@
+Signature-Version: 1.0
+Created-By: 1.0 (Android)
+SHA-256-Digest-Manifest: T29N1RurW4AuPBa8W/8ZkHslxU/XF3L9tZNuxln6VEI=
+X-Android-APK-Signed: 2, 3
+
+Name: AndroidManifest.xml
+SHA-256-Digest: 9HqopG0UDSNyVOA9mkwXJQcdopMZ2NQ1v1gVELnFTYw=
+
+Name: assets/Palabra.html
+SHA-256-Digest: z7fFLFMhSVVCrPTrkQdNBaqihyZN6g/ttcdZRzFh8uE=
+
+Name: classes.dex
+SHA-256-Digest: DjJklJZ8xbqX8PfCLsiTDlkN2mIGvLfWrXWQ0qP1RGE=
+
+Name: res/drawable/ic_launcher.xml
+SHA-256-Digest: Iso3BiCZWlRGD+S/Fa1JR86gH7aUNSvpJ0M2i4Y4qDo=
+
+Name: res/drawable/ic_notification.xml
+SHA-256-Digest: rNr11gaxoCuW7CvH5lJVeJkwgbljevmSTDMllqfYY8k=
+
+Name: resources.arsc
+SHA-256-Digest: 6UvAL/K4NJf78QxKF8PgZARhLKR5mm8GkMKfSwH2JKs=
+

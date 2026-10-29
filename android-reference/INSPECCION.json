@@ -1,0 +1,45 @@
+{
+  "package": "com.palabreo.app",
+  "versionName": "1.19",
+  "versionCode": 20,
+  "compileSdk": 35,
+  "targetSdk": 35,
+  "minSdk": 26,
+  "native_classes": [
+    "MainActivity",
+    "ReminderReceiver",
+    "ReminderJob",
+    "ReminderPolicy",
+    "Reminders"
+  ],
+  "bridges": [
+    "PalabreoActions",
+    "PalabreoAppearance",
+    "PalabreoReminders"
+  ],
+  "certificate_subject": "CN=Palabra personal",
+  "certificate_sha256": "32:50:7F:D4:A2:5A:F4:EC:FE:33:EE:D9:4F:24:B5:2B:0A:9F:57:2F:7D:1E:F3:35:A2:A5:06:B7:D3:3A:1F:4A",
+  "private_key_found": false,
+  "rpc_names_referenced": [
+    "palabreo_abandon",
+    "palabreo_answer_invitation",
+    "palabreo_create_league",
+    "palabreo_day",
+    "palabreo_global_day_leader",
+    "palabreo_guess",
+    "palabreo_invite",
+    "palabreo_invite_player",
+    "palabreo_join",
+    "palabreo_league_activity",
+    "palabreo_leagues",
+    "palabreo_open_round",
+    "palabreo_rankings",
+    "palabreo_rankings_period",
+    "palabreo_received_invitations",
+    "palabreo_report_word",
+    "palabreo_search_players",
+    "palabreo_set_alias",
+    "palabreo_set_league_words"
+  ],
+  "notes": "Inspección estática. Certificado leído con keytool; no equivale a verificar todas las firmas APK. Recursos y manifiesto son binarios compilados, no fuentes Android."
+}

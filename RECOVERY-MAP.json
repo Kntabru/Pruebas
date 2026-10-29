@@ -1,0 +1,26 @@
+{
+  "source_html_sha256": "ac77d38068ac465fac3979f2660d3f01884e294f394aa75fc97666dab69d3f0e",
+  "exact_reassembly_verified": true,
+  "blocks": [
+    {
+      "file": "js/theme.js",
+      "sha256": "91e8a61a4294bb87e7457a8d7260c39bb0e2d500ff6d7eafc02fa3c31a0c6693"
+    },
+    {
+      "file": "css/palabreo.css",
+      "sha256": "cbe6834945552ed8ef552433ae2643703a2c7a2773c103f6569f040d6f21db84"
+    },
+    {
+      "file": "js/game.js",
+      "sha256": "ccb908be74ac9746215f6df574630b7a2da2cdb5a859acfd3d0029efff3c4eb3"
+    },
+    {
+      "file": "js/auth.js",
+      "sha256": "f93e7c5b420433016db6538b6eb66ea1ada2ca619d661dbd422d60ef7e3549f1"
+    },
+    {
+      "file": "js/competitions.js",
+      "sha256": "fd5c59f475760200bca29c75be333f737aa02372fe29c2931541c42e605ac74a"
+    }
+  ]
+}
